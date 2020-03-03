@@ -3,13 +3,28 @@ import React from 'react';
 class App extends React.Component {
   constructor(props){
     super(props);
+
+    this.state = {
+      zbir: 0,
+    }
+    this.updateState = this.updateState.bind(this);
   }
+
+  updateState(e){
+    this.setState({ zbir: e.})
+  }
+  
+
+  componentDidMount() {
+    document.addEventListener('click', this.updateState);
+  };
+  
 
     render(){
       return(
         <div id="calculator">
           <div id="clear" class="buttons">AC</div>
-          <div id="display">0</div>
+          <div id="display">{this.state.zbir}</div>
           <div id="one" class="buttons">1</div>
           <div id="two" class="buttons">2</div>
           <div id="three" class="buttons">3</div>
