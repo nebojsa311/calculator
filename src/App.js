@@ -5,19 +5,20 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      zbir: 0,
+      zbir: 2,
     }
-    this.updateState = this.updateState.bind(this);
-  }
 
-  updateState(e){
-    this.setState({ zbir: e.})
+    this.clearer = this.clearer.bind(this);
   }
   
+  clearer(a, e=0){
+    this.setState( { zbir: e } )
+  }
 
   componentDidMount() {
-    document.addEventListener('click', this.updateState);
+    document.getElementById("clear").addEventListener('click', this.clearer );
   };
+  
   
 
     render(){
