@@ -6,9 +6,10 @@ class App extends React.Component {
 
     this.state = {
       zbir: [],
+      arrayZbir: [0],
       sabirnikPrvi: '',
       sabirnikDrugi: '',
-      artimetika: ''
+      artimetika: '',
     }
 
     this.clearer = this.clearer.bind(this);
@@ -31,86 +32,76 @@ class App extends React.Component {
 
 // Reset
   clearer(a, e=0){
-    this.setState( { zbir: e } )
+    this.setState( { zbir: e, sabirnikPrvi: 0, sabirnikDrugi: 0, artimetika:"", arrayZbir: [0] } )
   }
 
 // Brojevi 0-9
 
   one(){
-    let accumulator = this.state.zbir;
-    let onScreen = Array.from(accumulator);
+    let onScreen = Array.from(this.state.zbir);
     onScreen.push(1);
     this.setState( { zbir: onScreen } );
      
   }
 
   two(){
-    let accumulator = this.state.zbir;
-    let onScreen = Array.from(accumulator);
+    let onScreen = Array.from(this.state.zbir);
     onScreen.push(2);
     this.setState( { zbir: onScreen } );
      
   }
 
   three(){
-    let accumulator = this.state.zbir;
-    let onScreen = Array.from(accumulator);
+    let onScreen = Array.from(this.state.zbir);
     onScreen.push(3);
     this.setState( { zbir: onScreen } );
      
   }
 
   four(){
-    let accumulator = this.state.zbir;
-    let onScreen = Array.from(accumulator);
+    let onScreen = Array.from(this.state.zbir);
     onScreen.push(4);
     this.setState( { zbir: onScreen } );
      
   }
 
   five(){
-    let accumulator = this.state.zbir;
-    let onScreen = Array.from(accumulator);
+    let onScreen = Array.from(this.state.zbir);
     onScreen.push(5);
     this.setState( { zbir: onScreen } );
      
   }
 
   six(){
-    let accumulator = this.state.zbir;
-    let onScreen = Array.from(accumulator);
+    let onScreen = Array.from(this.state.zbir);
     onScreen.push(6);
     this.setState( { zbir: onScreen } );
      
   }
 
   seven(){
-    let accumulator = this.state.zbir;
-    let onScreen = Array.from(accumulator);
+    let onScreen = Array.from(this.state.zbir);
     onScreen.push(7);
     this.setState( { zbir: onScreen } );
      
   }
 
   eight(){
-    let accumulator = this.state.zbir;
-    let onScreen = Array.from(accumulator);
+    let onScreen = Array.from(this.state.zbir);
     onScreen.push(8);
     this.setState( { zbir: onScreen } );
      
   }
 
   nine(){
-    let accumulator = this.state.zbir;
-    let onScreen = Array.from(accumulator);
+    let onScreen = Array.from(this.state.zbir);
     onScreen.push(9);
     this.setState( { zbir: onScreen } );
      
   }
 
   zero(){
-    let accumulator = this.state.zbir;
-    let onScreen = Array.from(accumulator);
+    let onScreen = Array.from(this.state.zbir);
     if(onScreen[0] === 0){
       return false;
     }else {
@@ -119,50 +110,64 @@ class App extends React.Component {
     }
   }
 
-  // Znak jednako
-  equals(){   
-    let cinioci = this.state.zbir.toString().split(this.state.artimetika);
-    let prvicinilac = cinioci[0].replace(/,/g, "");
-    this.setState( { sabirnikPrvi: Number(prvicinilac) } )
-    let drugicinilac = cinioci[1] === undefined  ? false : cinioci[1].replace(/,/g, "");;
-    this.setState( { sabirnikDrugi: Number(drugicinilac) } );
-    let rezultati = eval(this.state.sabirnikPrvi + this.state.artimetika + this.state.sabirnikDrugi);
-    this.setState( { zbir: rezultati, sabirnikPrvi: rezultati } );
-   console.log(this.state.sabirnikPrvi);
-    
-  }
+  
 // Sabiranje, oduzimanje, množenje i djeljenje
   add(){
-    let onScreen = Array.from(this.state.zbir);
-    console.log(onScreen);
-    if(onScreen.every(element => typeof element === "number") && onScreen.length > 0){
-      onScreen.push("+");
-      this.setState( { zbir: onScreen, artimetika: "+" } )
+    this.setState( { artimetika: "+" } );
+    let numberTo = this.state.arrayZbir.map(element => Number(element));
+    if(numberTo.every(element => typeof element === "number") && numberTo.length > 0){
+      
+      let onScreen = [];
+      onScreen.push(this.state.zbir, this.state.artimetika);
+      this.setState( { zbir: onScreen, arrayZbir: onScreen } );
     };
   }
 
   subtract(){
-    let onScreen = Array.from(this.state.zbir);
-    if(onScreen.every(element => typeof element === "number") && onScreen.length > 0){
-      onScreen.push("-");
-      this.setState( { zbir: onScreen, artimetika: "-" } )
+    this.setState( { artimetika: "-" } );
+    let numberTo = this.state.arrayZbir.map(element => Number(element));
+    if(numberTo.every(element => typeof element === "number") && numberTo.length > 0){
+      
+      let onScreen = [];
+      onScreen.push(this.state.zbir, this.state.artimetika);
+      this.setState( { zbir: onScreen, arrayZbir: onScreen } );
     };
   }
 
   multiply(){
-    let onScreen = Array.from(this.state.zbir);
-    if(onScreen.every(element => typeof element === "number") && onScreen.length > 0){
-      onScreen.push("*");
-      this.setState( { zbir: onScreen, artimetika: "*" } )
+    this.setState( { artimetika: "*" } );
+    let numberTo = this.state.arrayZbir.map(element => Number(element));
+    if(numberTo.every(element => typeof element === "number") && numberTo.length > 0){
+      
+      let onScreen = [];
+      onScreen.push(this.state.zbir, this.state.artimetika);
+      this.setState( { zbir: onScreen, arrayZbir: onScreen } );
     };
   }
 
   divide(){
-    let onScreen = Array.from(this.state.zbir);
-    if(onScreen.every(element => typeof element === "number") && onScreen.length > 0){
-      onScreen.push("/");
-      this.setState( { zbir: onScreen, artimetika: "/" } )
+    this.setState( { artimetika: "/" } );
+    let numberTo = this.state.arrayZbir.map(element => Number(element));
+    if(numberTo.every(element => typeof element === "number") && numberTo.length > 0){
+      
+      let onScreen = [];
+      onScreen.push(this.state.zbir, this.state.artimetika);
+      this.setState( { zbir: onScreen, arrayZbir: onScreen } );
     };
+  }
+
+  // Znak jednako
+  equals(){   
+    let cinioci = this.state.zbir.toString().split(this.state.artimetika);
+
+    let prvicinilac = cinioci[0].replace(/,/g, "");
+    this.setState( { sabirnikPrvi: Number(prvicinilac) } );
+
+    let drugicinilac = cinioci[1] === undefined  ? false : cinioci[1].replace(/,/g, "");;
+    this.setState( { sabirnikDrugi: Number(drugicinilac) } );
+
+    let rezultati = eval(this.state.sabirnikPrvi + this.state.artimetika + this.state.sabirnikDrugi);
+    this.setState( { zbir: rezultati,  arrayZbir: rezultati.toString().split("") } );
   }
 
   componentDidMount() {
@@ -183,8 +188,6 @@ class App extends React.Component {
     document.getElementById("multiply").addEventListener('click', this.multiply);
     document.getElementById("divide").addEventListener('click', this.divide);
   };
-  
-  
 
     render(){
       return(
