@@ -127,13 +127,14 @@ class App extends React.Component {
     let drugicinilac = cinioci[1] === undefined  ? false : cinioci[1].replace(/,/g, "");;
     this.setState( { sabirnikDrugi: Number(drugicinilac) } );
     let rezultati = eval(this.state.sabirnikPrvi + this.state.artimetika + this.state.sabirnikDrugi);
-    this.setState( { zbir: Number(rezultati) } );
-   
+    this.setState( { zbir: rezultati, sabirnikPrvi: rezultati } );
+   console.log(this.state.sabirnikPrvi);
     
   }
 // Sabiranje, oduzimanje, množenje i djeljenje
   add(){
     let onScreen = Array.from(this.state.zbir);
+    console.log(onScreen);
     if(onScreen.every(element => typeof element === "number") && onScreen.length > 0){
       onScreen.push("+");
       this.setState( { zbir: onScreen, artimetika: "+" } )
