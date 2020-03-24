@@ -28,6 +28,7 @@ class App extends React.Component {
     this.equals = this.equals.bind(this);
     this.multiply = this.multiply.bind(this);
     this.divide = this.divide.bind(this);
+    this.decimal = this.decimal.bind(this);
   }
 
 // Reset
@@ -100,6 +101,14 @@ class App extends React.Component {
      
   }
 
+  decimal(){
+    let onScreen = Array.from(this.state.zbir);
+    if(onScreen.indexOf(".") === -1){
+    onScreen.push(".");
+    this.setState( { zbir: onScreen } );
+  }
+  }
+  
   zero(){
     let onScreen = Array.from(this.state.zbir);
     if(onScreen[0] === 0){
@@ -113,18 +122,46 @@ class App extends React.Component {
   
 // Sabiranje, oduzimanje, množenje i djeljenje
   add(){
+    if( typeof this.state.arrayZbir[1] === "string" ){
+      let cinioci = this.state.zbir.toString().split(this.state.artimetika);
+
+      let prvicinilac = cinioci[0].replace(/,/g, "");
+      this.setState( { sabirnikPrvi: Number(prvicinilac) } );
+
+      let drugicinilac = cinioci[1] === undefined  ? false : cinioci[1].replace(/,/g, "");;
+      this.setState( { sabirnikDrugi: Number(drugicinilac) } );
+
+      let rezultati = eval(this.state.sabirnikPrvi + this.state.artimetika + this.state.sabirnikDrugi);
+      this.setState( { zbir: rezultati,  arrayZbir: rezultati.toString().split("") } );
+    }
+
     this.setState( { artimetika: "+" } );
     let numberTo = this.state.arrayZbir.map(element => Number(element));
-    if(numberTo.every(element => typeof element === "number") && numberTo.length > 0){
+    if(numberTo.every(element => typeof element !== "string") && numberTo.length > 0){
       
       let onScreen = [];
       onScreen.push(this.state.zbir, this.state.artimetika);
       this.setState( { zbir: onScreen, arrayZbir: onScreen } );
     };
+
   }
 
   subtract(){
+    if( typeof this.state.arrayZbir[1] === "string"){
+      let cinioci = this.state.zbir.toString().split(this.state.artimetika);
+      
+      let prvicinilac = cinioci[0].replace(/,/g, "");
+      this.setState( { sabirnikPrvi: Number(prvicinilac) } );
+
+      let drugicinilac = cinioci[1] === undefined  ? false : cinioci[1].replace(/,/g, "");;
+      this.setState( { sabirnikDrugi: Number(drugicinilac) } );
+
+      let rezultati = eval(this.state.sabirnikPrvi + this.state.artimetika + this.state.sabirnikDrugi);
+      this.setState( { zbir: rezultati,  arrayZbir: rezultati.toString().split("") } );
+    };
+
     this.setState( { artimetika: "-" } );
+
     let numberTo = this.state.arrayZbir.map(element => Number(element));
     if(numberTo.every(element => typeof element === "number") && numberTo.length > 0){
       
@@ -135,6 +172,21 @@ class App extends React.Component {
   }
 
   multiply(){
+    if( typeof this.state.arrayZbir[1] === "string" ){
+   
+      let cinioci = this.state.zbir.toString().split(this.state.artimetika);
+
+      let prvicinilac = cinioci[0].replace(/,/g, "");
+      this.setState( { sabirnikPrvi: Number(prvicinilac) } );
+
+      let drugicinilac = cinioci[1] === undefined  ? false : cinioci[1].replace(/,/g, "");;
+      this.setState( { sabirnikDrugi: Number(drugicinilac) } );
+
+      let rezultati = eval(this.state.sabirnikPrvi + this.state.artimetika + this.state.sabirnikDrugi);
+      this.setState( { zbir: rezultati,  arrayZbir: rezultati.toString().split("") } );
+      
+    }
+
     this.setState( { artimetika: "*" } );
     let numberTo = this.state.arrayZbir.map(element => Number(element));
     if(numberTo.every(element => typeof element === "number") && numberTo.length > 0){
@@ -146,6 +198,19 @@ class App extends React.Component {
   }
 
   divide(){
+    if( typeof this.state.arrayZbir[1] === "string" ){
+      let cinioci = this.state.zbir.toString().split(this.state.artimetika);
+
+      let prvicinilac = cinioci[0].replace(/,/g, "");
+      this.setState( { sabirnikPrvi: Number(prvicinilac) } );
+
+      let drugicinilac = cinioci[1] === undefined  ? false : cinioci[1].replace(/,/g, "");;
+      this.setState( { sabirnikDrugi: Number(drugicinilac) } );
+
+      let rezultati = eval(this.state.sabirnikPrvi + this.state.artimetika + this.state.sabirnikDrugi);
+      this.setState( { zbir: rezultati,  arrayZbir: rezultati.toString().split("") } );
+    }
+
     this.setState( { artimetika: "/" } );
     let numberTo = this.state.arrayZbir.map(element => Number(element));
     if(numberTo.every(element => typeof element === "number") && numberTo.length > 0){
@@ -187,6 +252,7 @@ class App extends React.Component {
     document.getElementById("subtract").addEventListener('click', this.subtract);
     document.getElementById("multiply").addEventListener('click', this.multiply);
     document.getElementById("divide").addEventListener('click', this.divide);
+    document.getElementById("decimal").addEventListener('click', this.decimal);
   };
 
     render(){
