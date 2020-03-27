@@ -38,15 +38,18 @@ class App extends React.Component {
 // Numbers 0-9
 
   one(){
-    //Checks should it assign number to first or second element
+    //If there is no arthimetic sign displayed numbers entered are assigned to first element
     if(this.state.artimeticSign === undefined){
       let holderForFirst = this.state.firstElement;
       holderForFirst.push(1);
-      this.setState( { total: Number(holderForFirst.join("")), firstElement: holderForFirst } )
+      this.setState( { total: Number(holderForFirst.join("")), firstElement: holderForFirst } );
+    //If there is arthimetic sign displayed numbers entered are ssigned to second element
     } else if(this.state.artimeticSign !== undefined){
       let holderForSecond = this.state.secondElement;
       holderForSecond.push(1);
-      this.setState( { total: this.state.total + holderForSecond, secondElement: holderForSecond } );
+      let toAppend = Number(holderForSecond.join(""));
+      let firstElementConverted = Number(this.state.firstElement.join(""));
+      this.setState( { total: firstElementConverted + this.state.artimeticSign + toAppend, secondElement: holderForSecond } );
     }
   };
 
@@ -82,16 +85,24 @@ class App extends React.Component {
   };
 
   
-// Add function
+// Add functions
   add(){
-    if(this.state.artimeticSign !== "+"){
+    //Check is there a + sign, if not, concate plus sign on top of the displayed number
+    if(this.state.artimeticSign === undefined && this.state.firstElement.length > 0){
       this.setState( { total: this.state.total + "+", artimeticSign: "+" } );
-    } else if(this.state.artimeticSign === "+" && this.state.firstElement.length > 0){
+    //Check if there is arthimetic sign but it is not a + sign
+    } else if(this.state.artimeticSign !== undefined && this.state.artimeticSign !== "+"){
+      this.setState( { total: `${this.state.firstElement}+` } );
+    //If there is plus sign and second operand, calculate result and append + to displayed result
+    } else if(this.state.artimeticSign === "+" && this.state.secondElement.length > 0){
       let totalCalc = this.state.total.split(this.state.artimeticSign);
       let first = Number(totalCalc[0]);
       let second = Number(totalCalc[1]);
       totalCalc = first + second;
-      this.setState( { total: totalCalc, firstElement: [totalCalc], secondElement: [] } )
+      this.setState( { total: `${totalCalc}+`, firstElement: [totalCalc], secondElement: [] } );
+    //Check if there is artimetic sign, first element and no second element
+    } else if(this.state.artimeticSign === "+" && this.state.firstElement.length > 0 && this.state.secondElement.length === 0){
+      return;
     };
   };
 
