@@ -32,7 +32,7 @@ class App extends React.Component {
 
 // Reset
   clearer(a, e=0){
-    this.setState( { total: 0, firstElement: [], secondElement: [], artimeticSign: null } )
+    this.setState( { total: "0", firstElement: [], secondElement: [], artimeticSign: null } )
   };
 
 // Numbers 0-9
@@ -181,21 +181,36 @@ class App extends React.Component {
     }
   };
 
+  // adding decimal
   decimal(){
+    let indexoff = this.state.firstElement;
+    let indexofs = this.state.secondElement;
     // check where to append decimal point and dont allow two decimal points in a row
-    if(this.state.firstElement.indexOf(",") > 0){
-      return;
-    } else if(this.state.firstElement.length > 0 && this.state.artimeticSign === null){
+    if(this.state.firstElement.length === 0){
+      let zeroDec = "0.";
+      this.setState( { total: zeroDec, firstElement: [0, "."] } );
+      // check for decimals, and there is no any, add decimal point to first element
+    } else if(this.state.firstElement.length > 0 && indexoff.indexOf(".") === -1 && this.state.artimeticSign === null){
       let holderForFirst = this.state.firstElement;
-      holderForFirst.push(",");
-      this.setState( {total: holderForFirst, firstElement: holderForFirst } );
+      holderForFirst.push(".");
+      this.setState( { total: holderForFirst.join(""), firstElement: holderForFirst } );
+    
+    } else if(this.state.secondElement.length > 0 && indexofs.indexOf(".") === -1 && this.state.artimeticSign !== null){
+      let holderForSecond = this.state.secondElement;
+      holderForSecond.push(".");
+      this.setState( { total: holderForSecond.join(""), secondElement: holderForSecond } );
     }
-  };
-  
-  
+  }
+
+  // Zero
   zero(){
     //If there is no arthimetic sign displayed numbers entered are assigned to first element
     if(this.state.artimeticSign === null && this.state.firstElement.length === 0){
+      let holderForFirst = this.state.firstElement;
+      holderForFirst.push(0);
+      this.setState( { total: holderForFirst.join(""), firstElement: holderForFirst } );
+      // Add zero after decimal point
+    } else if(this.state.artimeticSign === null && this.state.firstElement[0] !== 0 && this.state.firstElement[0] !== "-"){
       let holderForFirst = this.state.firstElement;
       holderForFirst.push(0);
       this.setState( { total: holderForFirst.join(""), firstElement: holderForFirst } );
@@ -212,22 +227,46 @@ class App extends React.Component {
   
 // Add functions
   add(){
+    // Prevents from ilegal actions
+    if(this.state.firstElement[0] === "-" && this.state.firstElement.length === 1){
+      return;
     //Check is there a + sign, if not, concate plus sign on top of the displayed number
-    if(this.state.artimeticSign === null && this.state.firstElement.length > 0){
+    } else if(this.state.artimeticSign === null && this.state.firstElement.length > 0){
       this.setState( { total: this.state.total + "+", artimeticSign: "+" } );
     //Check if there is arthimetic sign but it is not a + sign
-    } else if(this.state.artimeticSign !== null && this.state.artimeticSign !== "+"){
-      this.setState( { total: `${this.state.firstElement}+` } );
+    } else if(this.state.artimeticSign !== null && this.state.artimeticSign !== "+" && this.state.secondElement.length === 0){
+      let first = this.state.firstElement;
+      first = first.join("");
+      first = Number(first);
+      this.setState( { total: `${first}+`, artimeticSign: "+" } );
     //Check if there is artimetic sign, first element and no second element
     } else if(this.state.artimeticSign === "+" && this.state.firstElement.length > 0 && this.state.secondElement.length === 0){
       return;
+    //If there is artimetic sign that is not a plus but there is a second operand, calculate result and append + to displayed result
+    } else if(this.state.artimeticSign !== "+" && this.state.secondElement.length > 0){
+      let first = this.state.firstElement;
+      let second = this.state.secondElement;
+      let totalCalc = null;
+      first = first.join("");
+      first = Number(first);
+      second = second.join("");
+      second = Number(second);
+
+      if(this.state.artimeticSign === "-"){
+         totalCalc = first - second;
+      } else if(this.state.artimeticSign === "*"){
+         totalCalc = first * second;
+      } else if(this.state.artimeticSign === "/"){
+         totalCalc = first / second;
+      }
+      this.setState( { total: `${totalCalc}+`, firstElement: [totalCalc], secondElement: [], artimeticSign: "+" } );
     //If there is plus sign and second operand, calculate result and append + to displayed result
     } else if(this.state.artimeticSign === "+" && this.state.secondElement.length > 0){
       let totalCalc = this.state.total.split(this.state.artimeticSign);
       let first = Number(totalCalc[0]);
       let second = Number(totalCalc[1]);
       totalCalc = first + second;
-      this.setState( { total: `${totalCalc}+`, firstElement: [totalCalc], secondElement: [] } );
+      this.setState( { total: `${totalCalc}+`, firstElement: [totalCalc], secondElement: [], artimeticSign: "+" } );
     }
   };
 
@@ -236,27 +275,47 @@ class App extends React.Component {
    // Check is there no artimetic sign and there 0 on display, so it set unary operator -
    if(this.state.artimeticSign === null && this.state.total === 0){
      this.setState( { firstElement: ["-"], total: "-"} );
-     //Check is there a - sign, if not, concate plus sign on top of the displayed number
+    // prevents from adding multiple - signs
+   } else if(this.state.firstElement[0] === "-" && this.state.firstElement.length === 1){
+     return;
+    //Check is there a - sign, if not, concate plus sign on top of the displayed number
    } else if(this.state.artimeticSign === null && this.state.firstElement.length > 0){
      this.setState( { total: this.state.total + "-", artimeticSign: "-" } );
+   // check for artimetic sign and second operand, calculate values and add - to result
+   } else if(this.state.artimeticSign !== "-" && this.state.secondElement.length > 0){
+    let first = this.state.firstElement;
+    let second = this.state.secondElement;
+    let totalCalc = null;
+    first = first.join("");
+    first = Number(first);
+    second = second.join("");
+    second = Number(second);
+
+    if(this.state.artimeticSign === "+"){
+       totalCalc = first + second;
+    } else if(this.state.artimeticSign === "*"){
+       totalCalc = first * second;
+    } else if(this.state.artimeticSign === "/"){
+       totalCalc = first / second;
+    }
+    this.setState( { total: `${totalCalc}-`, firstElement: [totalCalc], secondElement: [], artimeticSign: "-" } );
    //Check if there is arthimetic sign but it is not a - sign
    } else if(this.state.artimeticSign !== null && this.state.artimeticSign !== "-"){
-     this.setState( { total: `${this.state.firstElement}-` } );
+     let first = this.state.firstElement;
+     first = first.join("");
+     first = Number(first);
+     this.setState( { total: `${first}-`, artimeticSign: "-" } );
    //Check if there is - artimetic sign, first element and no second element
    } else if(this.state.artimeticSign === "+" && this.state.firstElement.length > 0 && this.state.secondElement.length === 0){
      return;
    //If there is - sign and second operand, calculate result and append - to displayed result
    } else if(this.state.artimeticSign === "-" && this.state.secondElement.length > 0){
-    /* let totalCalc = this.state.total.split(this.state.artimeticSign);
-     let first = Number(totalCalc[0]);
-     let second = Number(totalCalc[1]);
-     totalCalc = first - second;*/
      let firstEle = this.state.firstElement;
      let secondEle = this.state.secondElement;
      firstEle = firstEle.join("");
      secondEle = secondEle.join("");
-     
-     alert(typeof firstEle);
+     firstEle = Number(firstEle);
+     secondEle = Number(secondEle);
 
      let totale = firstEle - secondEle;
      this.setState( { total: `${totale}-`, firstElement: [totale], secondElement: [] } );
@@ -265,18 +324,119 @@ class App extends React.Component {
 
 // Multiply function
   multiply(){
-   
+    // Prevents from ilegal actions
+    if(this.state.firstElement[0] === "-" && this.state.firstElement.length === 1){
+      return;
+   // check for first element with no artimetic signs and also no second element
+  } else if(this.state.artimeticSign === null && this.state.firstElement.length > 0){
+    this.setState( { total: `${this.state.total}*`, artimeticSign: "*" } );
+   // Check for both elements and sign that is not a *, calculate vaule and append * to result
+   } else if(this.state.artimeticSign !== "*" && this.state.secondElement.length > 0){
+    let first = this.state.firstElement;
+    let second = this.state.secondElement;
+    let totalCalc = null;
+    first = first.join("");
+    first = Number(first);
+    second = second.join("");
+    second = Number(second);
+
+    if(this.state.artimeticSign === "+"){
+       totalCalc = first + second;
+    } else if(this.state.artimeticSign === "-"){
+       totalCalc = first - second;
+    } else if(this.state.artimeticSign === "/"){
+       totalCalc = first / second;
+    }
+    this.setState( { total: `${totalCalc}*`, firstElement: [totalCalc], secondElement: [], artimeticSign: "*" } );
+    // if there is operand but it is not a multiply, change it to * sign
+   } else if(this.state.artimeticSign !== "*" && this.state.firstElement.length > 0){
+    let first = this.state.firstElement;
+    first = first.join("");
+    first = Number(first);
+    this.setState( { total: `${first}*`, artimeticSign: "-" } );
+    // Both elements are there and there is a * sign
+   } else if(this.state.artimeticSign === "*" && this.state.secondElement.length > 0){
+    let first = this.state.firstElement;
+    let second = this.state.secondElement;
+    let totalCalc = null;
+    first = first.join("");
+    first = Number(first);
+    second = second.join("");
+    second = Number(second);
+    totalCalc = first * second;
+    this.setState( { total: `${totalCalc}*`, firstElement: [totalCalc], secondElement: [], artimeticSign: "*" } );
+   }
   };
 
 // Divide function
   divide(){
+    // Prevents from ilegal actions
+    if(this.state.firstElement[0] === "-" && this.state.firstElement.length === 1){
+      return;
+   // check for first element with no artimetic signs and also no second element
+  } else if(this.state.artimeticSign === null && this.state.firstElement.length > 0){
+    this.setState( { total: `${this.state.total}/`, artimeticSign: "/" } );
+   // Check for both elements and sign that is not a /, calculate vaule and append / to result
+   } else if(this.state.artimeticSign !== "/" && this.state.secondElement.length > 0){
+    let first = this.state.firstElement;
+    let second = this.state.secondElement;
+    let totalCalc = null;
+    first = first.join("");
+    first = Number(first);
+    second = second.join("");
+    second = Number(second);
+
+    if(this.state.artimeticSign === "+"){
+       totalCalc = first + second;
+    } else if(this.state.artimeticSign === "-"){
+       totalCalc = first - second;
+    } else if(this.state.artimeticSign === "*"){
+       totalCalc = first * second;
+    }
+    this.setState( { total: `${totalCalc}/`, firstElement: [totalCalc], secondElement: [], artimeticSign: "/" } );
+    // if there is operand but it is not a divide, change it to / sign
+   } else if(this.state.artimeticSign !== "/" && this.state.firstElement.length > 0){
+    let first = this.state.firstElement;
+     first = first.join("");
+     first = Number(first);
+     this.setState( { total: `${first}/`, artimeticSign: "/" } );
+    // Both elements are there and there is a / sign
+   } else if(this.state.artimeticSign === "/" && this.state.secondElement.length > 0){
+    let first = this.state.firstElement;
+    let second = this.state.secondElement;
+    let totalCalc = null;
+    first = first.join("");
+    first = Number(first);
+    second = second.join("");
+    second = Number(second);
+    totalCalc = first / second;
+    this.setState( { total: `${totalCalc}/`, firstElement: [totalCalc], secondElement: [], artimeticSign: "/" } );
+   }
 
   };
 
 // Equal sign
   equals(){   
-    
-  };
+    let first = this.state.firstElement;
+    let second = this.state.secondElement;
+    let totalCalc = null;
+    first = first.join("");
+    first = Number(first);
+    second = second.join("");
+    second = Number(second);
+
+    if(this.state.artimeticSign === "+"){
+      totalCalc = first + second;
+   } else if(this.state.artimeticSign === "-"){
+      totalCalc = first - second;
+   } else if(this.state.artimeticSign === "*"){
+      totalCalc = first * second;
+   } else if(this.state.artimeticSign === "/"){
+     totalCalc = first / second;
+   }
+
+   this.setState( { total: `${totalCalc}`, firstElement: [totalCalc], secondElement: [], artimeticSign: null } );
+};
 
 // Adding event listeners to elements
   componentDidMount() {
