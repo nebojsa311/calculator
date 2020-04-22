@@ -8,7 +8,7 @@ class App extends React.Component {
       total: 0,
       firstElement: [],
       secondElement: [],
-      artimeticSign: undefined,
+      artimeticSign: null,
     };
 // Function binding
     this.clearer = this.clearer.bind(this);
@@ -32,38 +32,35 @@ class App extends React.Component {
 
 // Reset
   clearer(a, e=0){
-    this.setState( { total: 0, firstElement: [], secondElement: [], artimeticSign: undefined } )
+    this.setState( { total: 0, firstElement: [], secondElement: [], artimeticSign: null } )
   };
 
 // Numbers 0-9
 
   one(){
-    //If there is no arthimetic sign displayed numbers entered are assigned to first element
-    if(this.state.artimeticSign === undefined){
+     //If there is no arthimetic sign displayed numbers entered are assigned to first element
+     if(this.state.artimeticSign === null){
       let holderForFirst = this.state.firstElement;
       holderForFirst.push(1);
       this.setState( { total: holderForFirst.join(""), firstElement: holderForFirst } );
     //If there is arthimetic sign displayed numbers entered are ssigned to second element
-    } else if(this.state.artimeticSign !== undefined && this.state.secondElement.length < 1){
+    } else if(this.state.artimeticSign !== null){
       let holderForSecond = this.state.secondElement;
       holderForSecond.push(1);
-      //checking is it first element decimal or round
-      if(this.state.firstElement.indexOf("," > 0)){
-        let decimala = Number(this.state.firstElement.join(""));
-        alert(typeof decimala)
-      }
-      this.setState( { total: this.state.artimeticSign + Number(holderForSecond.join("")), secondElement: holderForSecond } )
+      let toAppend = Number(holderForSecond.join(""));
+      let firstElementConverted = Number(this.state.firstElement.join(""));
+      this.setState( { total: firstElementConverted + this.state.artimeticSign + toAppend, secondElement: holderForSecond } );
     }
   };
 
   two(){
     //If there is no arthimetic sign displayed numbers entered are assigned to first element
-    if(this.state.artimeticSign === undefined){
+    if(this.state.artimeticSign === null){
       let holderForFirst = this.state.firstElement;
       holderForFirst.push(2);
       this.setState( { total: holderForFirst.join(""), firstElement: holderForFirst } );
     //If there is arthimetic sign displayed numbers entered are ssigned to second element
-    } else if(this.state.artimeticSign !== undefined){
+    } else if(this.state.artimeticSign !== null){
       let holderForSecond = this.state.secondElement;
       holderForSecond.push(2);
       let toAppend = Number(holderForSecond.join(""));
@@ -74,12 +71,12 @@ class App extends React.Component {
 
   three(){
     //If there is no arthimetic sign displayed numbers entered are assigned to first element
-    if(this.state.artimeticSign === undefined){
+    if(this.state.artimeticSign === null){
       let holderForFirst = this.state.firstElement;
       holderForFirst.push(3);
       this.setState( { total: holderForFirst.join(""), firstElement: holderForFirst } );
     //If there is arthimetic sign displayed numbers entered are ssigned to second element
-    } else if(this.state.artimeticSign !== undefined){
+    } else if(this.state.artimeticSign !== null){
       let holderForSecond = this.state.secondElement;
       holderForSecond.push(3);
       let toAppend = Number(holderForSecond.join(""));
@@ -90,12 +87,12 @@ class App extends React.Component {
 
   four(){
     //If there is no arthimetic sign displayed numbers entered are assigned to first element
-    if(this.state.artimeticSign === undefined){
+    if(this.state.artimeticSign === null){
       let holderForFirst = this.state.firstElement;
       holderForFirst.push(4);
       this.setState( { total: holderForFirst.join(""), firstElement: holderForFirst } );
     //If there is arthimetic sign displayed numbers entered are ssigned to second element
-    } else if(this.state.artimeticSign !== undefined){
+    } else if(this.state.artimeticSign !== null){
       let holderForSecond = this.state.secondElement;
       holderForSecond.push(4);
       let toAppend = Number(holderForSecond.join(""));
@@ -106,12 +103,12 @@ class App extends React.Component {
 
   five(){
     //If there is no arthimetic sign displayed numbers entered are assigned to first element
-    if(this.state.artimeticSign === undefined){
+    if(this.state.artimeticSign === null){
       let holderForFirst = this.state.firstElement;
       holderForFirst.push(5);
       this.setState( { total: holderForFirst.join(""), firstElement: holderForFirst } );
     //If there is arthimetic sign displayed numbers entered are ssigned to second element
-    } else if(this.state.artimeticSign !== undefined){
+    } else if(this.state.artimeticSign !== null){
       let holderForSecond = this.state.secondElement;
       holderForSecond.push(5);
       let toAppend = Number(holderForSecond.join(""));
@@ -122,12 +119,12 @@ class App extends React.Component {
 
   six(){
     //If there is no arthimetic sign displayed numbers entered are assigned to first element
-    if(this.state.artimeticSign === undefined){
+    if(this.state.artimeticSign === null){
       let holderForFirst = this.state.firstElement;
       holderForFirst.push(6);
       this.setState( { total: holderForFirst.join(""), firstElement: holderForFirst } );
     //If there is arthimetic sign displayed numbers entered are ssigned to second element
-    } else if(this.state.artimeticSign !== undefined){
+    } else if(this.state.artimeticSign !== null){
       let holderForSecond = this.state.secondElement;
       holderForSecond.push(6);
       let toAppend = Number(holderForSecond.join(""));
@@ -138,12 +135,12 @@ class App extends React.Component {
 
   seven(){
     //If there is no arthimetic sign displayed numbers entered are assigned to first element
-    if(this.state.artimeticSign === undefined){
+    if(this.state.artimeticSign === null){
       let holderForFirst = this.state.firstElement;
       holderForFirst.push(7);
       this.setState( { total: holderForFirst.join(""), firstElement: holderForFirst } );
     //If there is arthimetic sign displayed numbers entered are ssigned to second element
-    } else if(this.state.artimeticSign !== undefined){
+    } else if(this.state.artimeticSign !== null){
       let holderForSecond = this.state.secondElement;
       holderForSecond.push(7);
       let toAppend = Number(holderForSecond.join(""));
@@ -154,12 +151,12 @@ class App extends React.Component {
 
   eight(){
     //If there is no arthimetic sign displayed numbers entered are assigned to first element
-    if(this.state.artimeticSign === undefined){
+    if(this.state.artimeticSign === null){
       let holderForFirst = this.state.firstElement;
       holderForFirst.push(8);
       this.setState( { total: holderForFirst.join(""), firstElement: holderForFirst } );
     //If there is arthimetic sign displayed numbers entered are ssigned to second element
-    } else if(this.state.artimeticSign !== undefined){
+    } else if(this.state.artimeticSign !== null){
       let holderForSecond = this.state.secondElement;
       holderForSecond.push(8);
       let toAppend = Number(holderForSecond.join(""));
@@ -170,12 +167,12 @@ class App extends React.Component {
 
   nine(){
     //If there is no arthimetic sign displayed numbers entered are assigned to first element
-    if(this.state.artimeticSign === undefined){
+    if(this.state.artimeticSign === null){
       let holderForFirst = this.state.firstElement;
       holderForFirst.push(9);
       this.setState( { total: holderForFirst.join(""), firstElement: holderForFirst } );
     //If there is arthimetic sign displayed numbers entered are ssigned to second element
-    } else if(this.state.artimeticSign !== undefined){
+    } else if(this.state.artimeticSign !== null){
       let holderForSecond = this.state.secondElement;
       holderForSecond.push(9);
       let toAppend = Number(holderForSecond.join(""));
@@ -188,7 +185,7 @@ class App extends React.Component {
     // check where to append decimal point and dont allow two decimal points in a row
     if(this.state.firstElement.indexOf(",") > 0){
       return;
-    } else if(this.state.firstElement.length > 0 && this.state.artimeticSign === undefined){
+    } else if(this.state.firstElement.length > 0 && this.state.artimeticSign === null){
       let holderForFirst = this.state.firstElement;
       holderForFirst.push(",");
       this.setState( {total: holderForFirst, firstElement: holderForFirst } );
@@ -198,12 +195,12 @@ class App extends React.Component {
   
   zero(){
     //If there is no arthimetic sign displayed numbers entered are assigned to first element
-    if(this.state.artimeticSign === undefined && this.state.firstElement.length === 0){
+    if(this.state.artimeticSign === null && this.state.firstElement.length === 0){
       let holderForFirst = this.state.firstElement;
       holderForFirst.push(0);
       this.setState( { total: holderForFirst.join(""), firstElement: holderForFirst } );
     //If there is arthimetic sign displayed numbers entered are ssigned to second element
-    } else if(this.state.artimeticSign !== undefined){
+    } else if(this.state.artimeticSign !== null){
       let holderForSecond = this.state.secondElement;
       holderForSecond.push(0);
       let toAppend = Number(holderForSecond.join(""));
@@ -216,10 +213,10 @@ class App extends React.Component {
 // Add functions
   add(){
     //Check is there a + sign, if not, concate plus sign on top of the displayed number
-    if(this.state.artimeticSign === undefined && this.state.firstElement.length > 0){
+    if(this.state.artimeticSign === null && this.state.firstElement.length > 0){
       this.setState( { total: this.state.total + "+", artimeticSign: "+" } );
     //Check if there is arthimetic sign but it is not a + sign
-    } else if(this.state.artimeticSign !== undefined && this.state.artimeticSign !== "+"){
+    } else if(this.state.artimeticSign !== null && this.state.artimeticSign !== "+"){
       this.setState( { total: `${this.state.firstElement}+` } );
     //Check if there is artimetic sign, first element and no second element
     } else if(this.state.artimeticSign === "+" && this.state.firstElement.length > 0 && this.state.secondElement.length === 0){
@@ -236,7 +233,34 @@ class App extends React.Component {
 
 // Subtract function
   subtract(){
-   
+   // Check is there no artimetic sign and there 0 on display, so it set unary operator -
+   if(this.state.artimeticSign === null && this.state.total === 0){
+     this.setState( { firstElement: ["-"], total: "-"} );
+     //Check is there a - sign, if not, concate plus sign on top of the displayed number
+   } else if(this.state.artimeticSign === null && this.state.firstElement.length > 0){
+     this.setState( { total: this.state.total + "-", artimeticSign: "-" } );
+   //Check if there is arthimetic sign but it is not a - sign
+   } else if(this.state.artimeticSign !== null && this.state.artimeticSign !== "-"){
+     this.setState( { total: `${this.state.firstElement}-` } );
+   //Check if there is - artimetic sign, first element and no second element
+   } else if(this.state.artimeticSign === "+" && this.state.firstElement.length > 0 && this.state.secondElement.length === 0){
+     return;
+   //If there is - sign and second operand, calculate result and append - to displayed result
+   } else if(this.state.artimeticSign === "-" && this.state.secondElement.length > 0){
+    /* let totalCalc = this.state.total.split(this.state.artimeticSign);
+     let first = Number(totalCalc[0]);
+     let second = Number(totalCalc[1]);
+     totalCalc = first - second;*/
+     let firstEle = this.state.firstElement;
+     let secondEle = this.state.secondElement;
+     firstEle = firstEle.join("");
+     secondEle = secondEle.join("");
+     
+     alert(typeof firstEle);
+
+     let totale = firstEle - secondEle;
+     this.setState( { total: `${totale}-`, firstElement: [totale], secondElement: [] } );
+   }
   };
 
 // Multiply function
