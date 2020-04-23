@@ -243,7 +243,7 @@ class App extends React.Component {
     } else if(this.state.artimeticSign === "+" && this.state.firstElement.length > 0 && this.state.secondElement.length === 0){
       return;
     //If there is artimetic sign that is not a plus but there is a second operand, calculate result and append + to displayed result
-    } else if(this.state.artimeticSign !== "+" && this.state.secondElement.length > 0){
+    } else if(this.state.artimeticSign !== "+" && this.state.secondElement.length > 0 && this.state.secondElement[0] !== "-"){
       let first = this.state.firstElement;
       let second = this.state.secondElement;
       let totalCalc = null;
@@ -260,6 +260,11 @@ class App extends React.Component {
          totalCalc = first / second;
       }
       this.setState( { total: `${totalCalc}+`, firstElement: [totalCalc], secondElement: [], artimeticSign: "+" } );
+    //if there is first and second and artimetic sign, but second element is sign not a number
+    } else if (this.state.secondElement.length > 0 && this.state.secondElement[0] === "-"){
+      let slicedTotal = this.state.total;
+      slicedTotal = slicedTotal.substring(0, slicedTotal.length - 2);
+      this.setState( { total: `${slicedTotal}+`, artimeticSign: "+", secondElement: [] } );
     //If there is plus sign and second operand, calculate result and append + to displayed result
     } else if(this.state.artimeticSign === "+" && this.state.secondElement.length > 0){
       let totalCalc = this.state.total.split(this.state.artimeticSign);
@@ -281,6 +286,9 @@ class App extends React.Component {
     //Check is there a - sign, if not, concate plus sign on top of the displayed number
    } else if(this.state.artimeticSign === null && this.state.firstElement.length > 0){
      this.setState( { total: this.state.total + "-", artimeticSign: "-" } );
+    //Function that enables second element to be negative
+   } else if(this.state.artimeticSign !== null && this.state.artimeticSign !== "-" && this.state.firstElement.length > 0 && this.state.secondElement.length === 0){
+    this.setState( { total: `${this.state.total}-`, secondElement: ["-"] } );
    // check for artimetic sign and second operand, calculate values and add - to result
    } else if(this.state.artimeticSign !== "-" && this.state.secondElement.length > 0){
     let first = this.state.firstElement;
@@ -330,6 +338,11 @@ class App extends React.Component {
    // check for first element with no artimetic signs and also no second element
   } else if(this.state.artimeticSign === null && this.state.firstElement.length > 0){
     this.setState( { total: `${this.state.total}*`, artimeticSign: "*" } );
+    //if there is first and second and artimetic sign, but second element is sign not a number
+  } else if (this.state.secondElement.length > 0 && this.state.secondElement[0] === "-"){
+    let slicedTotal = this.state.total;
+    slicedTotal = slicedTotal.substring(0, slicedTotal.length - 2);
+    this.setState( { total: `${slicedTotal}*`, artimeticSign: "*", secondElement: [] } );
    // Check for both elements and sign that is not a *, calculate vaule and append * to result
    } else if(this.state.artimeticSign !== "*" && this.state.secondElement.length > 0){
     let first = this.state.firstElement;
@@ -376,6 +389,11 @@ class App extends React.Component {
    // check for first element with no artimetic signs and also no second element
   } else if(this.state.artimeticSign === null && this.state.firstElement.length > 0){
     this.setState( { total: `${this.state.total}/`, artimeticSign: "/" } );
+    //if there is first and second and artimetic sign, but second element is sign not a number
+  } else if (this.state.secondElement.length > 0 && this.state.secondElement[0] === "-"){
+    let slicedTotal = this.state.total;
+    slicedTotal = slicedTotal.substring(0, slicedTotal.length - 2);
+    this.setState( { total: `${slicedTotal}/`, artimeticSign: "/", secondElement: [] } );
    // Check for both elements and sign that is not a /, calculate vaule and append / to result
    } else if(this.state.artimeticSign !== "/" && this.state.secondElement.length > 0){
     let first = this.state.firstElement;
