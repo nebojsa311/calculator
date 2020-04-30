@@ -187,14 +187,13 @@ class App extends React.Component {
     let indexofs = this.state.secondElement;
     // check where to append decimal point and dont allow two decimal points in a row
     if(this.state.firstElement.length === 0){
-      let zeroDec = "0.";
+      let zeroDec = "0,";
       this.setState( { total: zeroDec, firstElement: [0, "."] } );
       // check for decimals, and there is no any, add decimal point to first element
     } else if(this.state.firstElement.length > 0 && indexoff.indexOf(".") === -1 && this.state.artimeticSign === null){
       let holderForFirst = this.state.firstElement;
       holderForFirst.push(".");
       this.setState( { total: holderForFirst.join(""), firstElement: holderForFirst } );
-    
     } else if(this.state.secondElement.length > 0 && indexofs.indexOf(".") === -1 && this.state.artimeticSign !== null){
       let holderForSecond = this.state.secondElement;
       holderForSecond.push(".");
@@ -366,7 +365,7 @@ class App extends React.Component {
     let first = this.state.firstElement;
     first = first.join("");
     first = Number(first);
-    this.setState( { total: `${first}*`, artimeticSign: "-" } );
+    this.setState( { total: `${first}*`, artimeticSign: "*" } );
     // Both elements are there and there is a * sign
    } else if(this.state.artimeticSign === "*" && this.state.secondElement.length > 0){
     let first = this.state.firstElement;
@@ -443,7 +442,9 @@ class App extends React.Component {
     second = second.join("");
     second = Number(second);
 
-    if(this.state.artimeticSign === "+"){
+   if(this.state.artimeticSign === null){
+     return;
+   } else if(this.state.artimeticSign === "+"){
       totalCalc = first + second;
    } else if(this.state.artimeticSign === "-"){
       totalCalc = first - second;
@@ -451,10 +452,12 @@ class App extends React.Component {
       totalCalc = first * second;
    } else if(this.state.artimeticSign === "/"){
      totalCalc = first / second;
-   }
+  }
 
    this.setState( { total: `${totalCalc}`, firstElement: [totalCalc], secondElement: [], artimeticSign: null } );
 };
+
+
 
 // Adding event listeners to elements
   componentDidMount() {
@@ -475,6 +478,45 @@ class App extends React.Component {
     document.getElementById("multiply").addEventListener('click', this.multiply);
     document.getElementById("divide").addEventListener('click', this.divide);
     document.getElementById("decimal").addEventListener('click', this.decimal);
+    // Keybord events
+    document.addEventListener('keyup', (e) => { 
+      if(e.key === "1") {
+        this.one();
+      } else if(e.key === "2") {
+        this.two();
+      } else if(e.key === "3") {
+        this.three();
+      } else if(e.key === "4") {
+        this.four();
+      } else if(e.key === "5") {
+        this.five();
+      } else if(e.key === "6") {
+        this.six();
+      } else if(e.key === "7") {
+        this.seven();
+      } else if(e.key === "8") {
+        this.eight();
+      } else if(e.key === "9") {
+        this.nine();
+      } else if(e.key === "0") {
+        this.zero();
+      } else if(e.key === "+") {
+        this.add();
+      } else if(e.key === "-") {
+        this.subtract();
+      } else if(e.key === "*") {
+        this.multiply();
+      } else if(e.key === "/") {
+        this.divide();
+      } else if(e.key === "Enter") {
+        this.equals();
+      } else if(e.key === ","){
+        this.decimal();
+      } else if(e.key === "Escape"){
+        this.clearer();
+      }
+    });
+
   };
 
 // Rendering elements to page
