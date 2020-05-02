@@ -5,7 +5,7 @@ class App extends React.Component {
     super(props);
 // states
     this.state = {
-      total: 0,
+      total: "0",
       firstElement: [],
       secondElement: [],
       artimeticSign: null,
@@ -28,6 +28,7 @@ class App extends React.Component {
     this.multiply = this.multiply.bind(this);
     this.divide = this.divide.bind(this);
     this.decimal = this.decimal.bind(this);
+    this.lose = this.lose.bind(this);
   };
 
 // Reset
@@ -457,6 +458,30 @@ class App extends React.Component {
    this.setState( { total: `${totalCalc}`, firstElement: [totalCalc], secondElement: [], artimeticSign: null } );
 };
 
+// Function for  cutting number to four decimals
+lose(){
+
+  let totalTo = Array.from(this.state.firstElement).filter(element => element !== ",");
+  totalTo.toString();
+  let controlPoint = totalTo.slice(totalTo.indexOf("."));
+
+  if(controlPoint.length > 5){
+    let startingPoint = totalTo.indexOf(".") + 4;
+    totalTo = totalTo.slice(0, startingPoint);
+    this.setState({ total: totalTo, firstElement: Array.from(totalTo) });
+  }
+
+
+
+
+  /*let totalTo = this.state.firstElement;
+  if(totalTo.indexOf(".") > 0 && this.state.firstElement.length > 0){
+    let startingPoint = totalTo.indexOf(".") + 5;
+    totalTo = totalTo.slice(0, startingPoint);
+    this.setState({ total: totalTo, firstElement: Array.from(totalTo) });
+  } */
+}
+
 
 
 // Adding event listeners to elements
@@ -480,6 +505,9 @@ class App extends React.Component {
     document.getElementById("decimal").addEventListener('click', this.decimal);
     // Keybord events
     document.addEventListener('keyup', (e) => { 
+
+      this.lose();
+
       if(e.key === "1") {
         this.one();
       } else if(e.key === "2") {
@@ -514,10 +542,12 @@ class App extends React.Component {
         this.decimal();
       } else if(e.key === "Escape"){
         this.clearer();
+      } else if(e.key === "k"){
+        this.lose();
       }
-    });
+ });
+};
 
-  };
 
 // Rendering elements to page
     render(){
