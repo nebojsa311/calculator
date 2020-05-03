@@ -288,7 +288,7 @@ class App extends React.Component {
      this.setState( { total: this.state.total + "-", artimeticSign: "-" } );
     //Function that enables second element to be negative
    } else if(this.state.artimeticSign !== null && this.state.artimeticSign !== "-" && this.state.firstElement.length > 0 && this.state.secondElement.length === 0){
-    this.setState( { total: `${this.state.total}-`, secondElement: ["-"] } );
+    this.setState( { total: `${this.state.total}-`, secondElement: ["-"], firstElement: this.state.firstElement } );
    // check for artimetic sign and second operand, calculate values and add - to result
    } else if(this.state.artimeticSign !== "-" && this.state.secondElement.length > 0){
     let first = this.state.firstElement;
@@ -461,25 +461,15 @@ class App extends React.Component {
 // Function for  cutting number to four decimals
 lose(){
 
-  let totalTo = Array.from(this.state.firstElement).filter(element => element !== ",");
-  totalTo.toString();
-  let controlPoint = totalTo.slice(totalTo.indexOf("."));
+  let totalTo = this.state.total;
 
-  if(controlPoint.length > 5){
-    let startingPoint = totalTo.indexOf(".") + 4;
-    totalTo = totalTo.slice(0, startingPoint);
-    this.setState({ total: totalTo, firstElement: Array.from(totalTo) });
-  }
-
-
-
-
-  /*let totalTo = this.state.firstElement;
   if(totalTo.indexOf(".") > 0 && this.state.firstElement.length > 0){
     let startingPoint = totalTo.indexOf(".") + 5;
     totalTo = totalTo.slice(0, startingPoint);
-    this.setState({ total: totalTo, firstElement: Array.from(totalTo) });
-  } */
+    let forFirst = totalTo.slice(0, totalTo.length-1);
+    forFirst = Number(forFirst);
+    this.setState({ total: totalTo, firstElement: [forFirst] });
+  } 
 }
 
 
@@ -498,15 +488,18 @@ lose(){
     document.getElementById("nine").addEventListener('click', this.nine);
     document.getElementById("zero").addEventListener('click', this.zero);
     document.getElementById("add").addEventListener('click', this.add);
+    document.getElementById("add").addEventListener('click', this.lose);
     document.getElementById("equals").addEventListener('click', this.equals);
+    document.getElementById("equals").addEventListener('click', this.lose);
     document.getElementById("subtract").addEventListener('click', this.subtract);
+    document.getElementById("subtract").addEventListener('click', this.lose);
     document.getElementById("multiply").addEventListener('click', this.multiply);
+    document.getElementById("multiply").addEventListener('click', this.lose);
     document.getElementById("divide").addEventListener('click', this.divide);
+    document.getElementById("divide").addEventListener('click', this.lose);
     document.getElementById("decimal").addEventListener('click', this.decimal);
     // Keybord events
     document.addEventListener('keyup', (e) => { 
-
-      this.lose();
 
       if(e.key === "1") {
         this.one();
@@ -530,21 +523,24 @@ lose(){
         this.zero();
       } else if(e.key === "+") {
         this.add();
+        setTimeout(this.lose(), 1000);
       } else if(e.key === "-") {
         this.subtract();
+        setTimeout(this.lose(), 1000);
       } else if(e.key === "*") {
         this.multiply();
+        setTimeout(this.lose(), 1000);
       } else if(e.key === "/") {
         this.divide();
+        setTimeout(this.lose(), 1000);
       } else if(e.key === "Enter") {
         this.equals();
+        setTimeout(this.lose(), 1000);
       } else if(e.key === ","){
         this.decimal();
       } else if(e.key === "Escape"){
         this.clearer();
-      } else if(e.key === "k"){
-        this.lose();
-      }
+      } 
  });
 };
 
